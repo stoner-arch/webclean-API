@@ -41,8 +41,20 @@ def extract_emails(text: str) -> list[str]:
     return sorted(set(m.lower() for m in EMAIL_RE.findall(text)))
 
 
+def _valid_phone(candidate: str) -> bool:
+    digits = re.sub(r"\D", "", candidate)
+    if not 7 <= len(digits) <= 15:
+        return False
+    groups = [len(g) for g in re.findall(r"\d+", candidate)]
+    if groups == [3, 3, 4]:
+        return True
+    if groups == [1, 3, 3, 4]:
+        return True
+    return len(groups) == 1 and len(digits) in (7, 10)
+
+
 def extract_phones(text: str) -> list[str]:
-    return sorted(set(m.strip() for m in PHONE_RE.findall(text)))
+    return sorted(set(m.strip() for m in PHONE_RE.findall(text) if _valid_phone(m)))
 
 
 def extract_hours(soup) -> list[str]:

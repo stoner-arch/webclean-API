@@ -33,6 +33,11 @@ def test_extract_phones():
     assert "800-555-0199" in phones
 
 
+def test_extract_phones_rejects_decimal():
+    phones = extract_phones("Average rating is 5.6666666666 stars")
+    assert phones == []
+
+
 def test_extract_hours():
     soup = BeautifulSoup(SAMPLE_HTML, "html.parser")
     hours = extract_hours(soup)
