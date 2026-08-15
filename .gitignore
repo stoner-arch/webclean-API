@@ -3,4 +3,5 @@ __pycache__/
 .venv/
 venv/
 .env
+ENV_VARS.txt
 .pytest_cache/
