@@ -2,7 +2,7 @@ import json
 import os
 import time
 
-from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
+from fastapi import Depends, FastAPI, Header, HTTPException, Query
 
 from scraper import scrape_url
 
@@ -130,8 +130,3 @@ def quota(api_key: str = Depends(require_key)):
     tier, per_minute, per_month = API_KEYS[api_key]
     remaining = limiter.remaining(api_key, per_minute, per_month)
     return {"tier": tier, "limits": {"per_minute": per_minute, "per_month": per_month}, **remaining}
-
-
-@app.get("/api/debug")
-def debug(request: Request):
-    return {"headers": dict(request.headers)}
