@@ -6,6 +6,8 @@ from scraper import extract_emails, extract_hours, extract_phones
 
 client = TestClient(app)
 
+HEADERS = {"X-API-Key": "demo-free"}
+
 SAMPLE_HTML = """
 <html>
   <head>
@@ -46,10 +48,32 @@ def test_extract_hours():
 
 def test_extract_endpoint(monkeypatch):
     monkeypatch.setattr("scraper.fetch_html", lambda url: SAMPLE_HTML)
-    response = client.get("/api/extract", params={"url": "https://example.com"})
+    response = client.get("/api/extract", params={"url": "https://example.com"}, headers=HEADERS)
     assert response.status_code == 200
     data = response.json()
     assert data["title"] == "Joe's Diner"
     assert data["meta_description"] == "Best burgers in town."
     assert "joe@diner.com" in data["emails"]
     assert "https://example.com/menu" in data["links"]
+
+
+def test_extract_requires_key():
+    response = client.get("/api/extract", params={"url": "https://example.com"})
+    assert response.status_code == 401
+
+
+def test_extract_rejects_bad_key():
+    response = client.get(
+        "/api/extract",
+        params={"url": "https://example.com"},
+        headers={"X-API-Key": "nope"},
+    )
+    assert response.status_code == 401
+
+
+def test_quota_endpoint():
+    response = client.get("/api/quota", headers=HEADERS)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["tier"] == "free"
+    assert data["per_month_remaining"] > 0
