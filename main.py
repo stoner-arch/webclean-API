@@ -74,7 +74,13 @@ class RateLimiter:
 limiter = RateLimiter()
 
 
-def require_key(x_api_key: str = Header(None)) -> str:
+def require_key(
+    x_api_key: str = Header(None),
+    x_rapidapi_proxy_secret: str = Header(None),
+) -> str:
+    secret = os.environ.get("RAPIDAPI_PROXY_SECRET")
+    if secret and x_rapidapi_proxy_secret == secret:
+        return "rapidapi"
     if not x_api_key or x_api_key not in API_KEYS:
         raise HTTPException(
             status_code=401,
@@ -108,6 +114,8 @@ def extract(
 
 @app.get("/api/quota")
 def quota(api_key: str = Depends(require_key)):
+    if api_key == "rapidapi":
+        return {"tier": "rapidapi", "limits": {"per_minute": "unlimited", "per_month": "billed by RapidAPI"}}
     tier, per_minute, per_month = API_KEYS[api_key]
     remaining = limiter.remaining(api_key, per_minute, per_month)
     return {"tier": tier, "limits": {"per_minute": per_minute, "per_month": per_month}, **remaining}
