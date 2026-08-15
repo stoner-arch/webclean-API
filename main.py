@@ -15,6 +15,8 @@ app = FastAPI(
 DEFAULT_KEYS = {
     "demo-free": ("free", 10, 50),
     "demo-pro": ("pro", 60, 5000),
+    "wcf_bb9210f01cf9066e": ("free", 10, 50),
+    "wcf_3ff8bf662940d799": ("pro", 60, 5000),
 }
 
 MONTH_SECONDS = 30 * 24 * 60 * 60
