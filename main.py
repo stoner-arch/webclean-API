@@ -81,9 +81,13 @@ def require_key(
     x_rapidapi_proxy_secret: str = Header(None),
 ) -> str:
     secrets = [
-        os.environ.get("RAPIDAPI_PROXY_SECRET"),
-        "x7Kp9mQ2vR8sL5nZ4",
-        "72e30c30-9864-11f1-b5e0-9d4b10426025",
+        s
+        for s in [
+            os.environ.get("RAPIDAPI_PROXY_SECRET"),
+            "x7Kp9mQ2vR8sL5nZ4",
+            "72e30c30-9864-11f1-b5e0-9d4b10426025",
+        ]
+        if s
     ]
     if x_rapidapi_proxy_secret in secrets:
         return "rapidapi"
