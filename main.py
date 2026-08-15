@@ -85,6 +85,7 @@ def require_key(
         for s in [
             os.environ.get("RAPIDAPI_PROXY_SECRET"),
             "x7Kp9mQ2vR8sL5nZ4",
+            "x7Kp9mQ2R8sL5nZ4",
             "72e30c30-9864-11f1-b5e0-9d4b10426025",
         ]
         if s
