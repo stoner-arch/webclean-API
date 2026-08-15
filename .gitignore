@@ -4,4 +4,5 @@ __pycache__/
 venv/
 .env
 ENV_VARS.txt
+PROGRESS.md
 .pytest_cache/
