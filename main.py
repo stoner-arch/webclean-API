@@ -15,8 +15,6 @@ app = FastAPI(
 DEFAULT_KEYS = {
     "demo-free": ("free", 10, 50),
     "demo-pro": ("pro", 60, 5000),
-    "wcf_bb9210f01cf9066e": ("free", 10, 50),
-    "wcf_3ff8bf662940d799": ("pro", 60, 5000),
 }
 
 MONTH_SECONDS = 30 * 24 * 60 * 60
@@ -80,17 +78,8 @@ def require_key(
     x_api_key: str = Header(None),
     x_rapidapi_proxy_secret: str = Header(None),
 ) -> str:
-    secrets = [
-        s
-        for s in [
-            os.environ.get("RAPIDAPI_PROXY_SECRET"),
-            "x7Kp9mQ2vR8sL5nZ4",
-            "x7Kp9mQ2R8sL5nZ4",
-            "72e30c30-9864-11f1-b5e0-9d4b10426025",
-        ]
-        if s
-    ]
-    if x_rapidapi_proxy_secret in secrets:
+    secret = os.environ.get("RAPIDAPI_PROXY_SECRET")
+    if secret and x_rapidapi_proxy_secret == secret:
         return "rapidapi"
     if not x_api_key or x_api_key not in API_KEYS:
         raise HTTPException(
