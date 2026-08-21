@@ -16,7 +16,7 @@ phones, business hours, links, word count).
 ## Workflow
 
 ```bash
-cd /storage/emulated/0/AI-Projects/html-test/webclean-api
+# from the repo root
 python -m pytest
 git add . && git commit -m "msg" && git push
 ```
