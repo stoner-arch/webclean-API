@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+ENV_VARS.txt
+.git/
+.gitignore
+.pytest_cache/
+PROGRESS.md
+AGENTS.md
+test_main.py
